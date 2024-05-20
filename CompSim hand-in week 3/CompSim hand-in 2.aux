@@ -1,0 +1,38 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Mesh quality measures}{1}{section.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Illustrations of a regular (left) and an irregular (right) triangle along with their respective inscribed (red) and circumscribed (blue) circles. We see that for the regular triangle, the radii of the inscribed and circumscribed circles are closer than in the other case.}}{1}{figure.caption.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}The marching triangles algorithm}{1}{section.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Illustrations of the rules applied for the two special cases in the algorithm. In the first one we have one vertex inside the polygon, and in the second we have two. We can see that in the first case we end up with one triangle, whereas in the second case we end up fabricating an aditional triangle.}}{2}{figure.caption.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The resluts of applying our marching triangles algorithm for the provided polygon. In the first image, we have plotted the contur of the SDF, to verify that our algorithm follows the boundary. We see that this is mostly the case except for a few inaccuracies, e.g. around the upper left corner on the inside. A problem with the first image is, that it's actually not clear whether we have correctly generated all the triangles in the mesh, since we can only see their edges. In the second image we have given each triangle a random color to verify that we actually did create them all, and we can see that we did.}}{2}{figure.caption.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Generating meshes}{2}{section.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Result of the Wildmeshing tetrahedralizer on the armadillo model for edge length settings $l_\mathrm  {edge} = 0.05$ (left) and $l_\mathrm  {edge} = 0.0125$ (right).}}{2}{figure.caption.8}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Result of the Wildmeshing tetrahedralizer on the left brain model for edge length settings $l_\mathrm  {edge} = 0.05$ (left) and $l_\mathrm  {edge} = 0.0125$ (right).}}{2}{figure.caption.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Result of our marching triangles alogrithm for the 5- and 20-legged star shapes, both done for grid sizes $I = 100$ and $I = 35$. Wee see that, for low grid sizes, our algorithm has a very hard time with fine edges, and the 20-legged star shape is basically unrecognizable. This happens in part due to the way we project the triangle vertices, and the fact that the vertices of any one triangle on our intial mesh might be in two completely different parts of the shape due to the grid size being way larger than the thickness of the arms of the star in this case. When we project the triangle vertices onto the 0 contour of the SDF, we assume that the directional gradient of the SDF is constant along the line on which we project the points, which is generally not true, and depends on the shape of the polygon. This causes inaccuracies, and in the worst cases, if the grid is not very fine, complete failure to capture the relevant geometry.}}{3}{figure.caption.11}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Result of the Wildmeshing algorithm on the 5-legged and 20-legged stars. We see that the number of triangles needed to acurately conform to the shape of the polygon is actually much less than in our marching triangles algorithm, hinting at some much needed optimization in our algorithm.}}{3}{figure.caption.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Mesh quality comparison}{3}{section.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Histograms of the radius and area ratios for the 5-legged and 20-legged star shape meshes generated with our marching traingles algorithm with grid sizes $I = 100$. We see that our marching triangles algorithm favors a specific type of triangle, which makes sense since we initially constructed them on a very regular, square grid. Another observation is that the amount of triangles deviating from this prioritized triangle is much higher for the 20-legged star. This happens because the ratio of boundary length to volume is much bigger here, and thus more triangles have to be altered by our algorithm, which results in them being of different qualities than the ones not altered by the algorithm. Note that we haven't included quality measures in the case of the grid size $I = 35$, since the 20-legged star broke down completely in this scenario, and thus proper comparison isn't possible.}}{3}{figure.caption.13}\protected@file@percent }
+\newlabel{tocindent-1}{0pt}
+\newlabel{tocindent0}{0pt}
+\newlabel{tocindent1}{4.185pt}
+\newlabel{tocindent2}{0pt}
+\newlabel{tocindent3}{0pt}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Histograms of the radius and area ratios for the 20-legged star shape meshes generated with the Wildmeshing algorithm. We see that in the case of the 5-legged star, the Wildmeshing algorithm generates only a few triangles, and thus, their histograms have very low statistics, but in general the quality of the triangles generated is above 0.5. For the 20-legged star, way more triangles were generated, and we see that their qualities are pretty uniformly distributed with a slight trend towards around 0.9. Seen in this light, it seems that teh quality of our algorithm is actually better than the Wildmeshing algorithm, but this is probably not the case. The reason is, that we have a very high concentration of low quality triangles around all of the boundary of the shape, and very different quality triangles on the inside, which could cause inconsistencies when simulating.}}{4}{figure.caption.14}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Histograms of the radius and area ratios for the tetrahedral mesh of the left brain model generated by the Wildmeshing tetrahedralizer algorithm. The experiments were done with edge length settings $l_\mathrm  {edge} = 0.05$ and $l_\mathrm  {edge} = 0.0125$. We see that the hsitograms have very smooth distributions, centered around specific quality values. Importantly, we see, that the quality is greater for the finer edge length setting, which is expected.}}{4}{figure.caption.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Conclusion}{4}{section.6}\protected@file@percent }
+\newlabel{TotPages}{{4}{4}{}{page.4}{}}
+\gdef \@abspage@last{4}

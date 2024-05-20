@@ -1,0 +1,109 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\newlabel{eq:governing}{{1}{1}{Week 1: Introduction}{equation.0.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}The finite difference approximation}{1}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Motivation}{1}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Derivation of 1st and 2nd order derivatives}{1}{subsection.1.2}\protected@file@percent }
+\newlabel{eq:taylordiff}{{4}{1}{Derivation of 1st and 2nd order derivatives}{equation.1.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Taylor approximation to of orders 1 to 7 of the function $\sin (x)$ (Source: Wikipedia)}}{1}{figure.caption.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The computational mesh}}{1}{figure.caption.3}\protected@file@percent }
+\newlabel{eq:FDA}{{5}{1}{Derivation of 1st and 2nd order derivatives}{equation.1.5b}{}}
+\newlabel{eq:BDA}{{6}{2}{Derivation of 1st and 2nd order derivatives}{equation.1.6b}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Numerical solution}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Formulation of the linear system}{2}{subsection.2.1}\protected@file@percent }
+\newlabel{eq:app_governing}{{10}{2}{Formulation of the linear system}{equation.2.10}{}}
+\newlabel{eq:lin_sys}{{11}{2}{Formulation of the linear system}{equation.2.11}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The stencil of the point $u_{i,j}$}}{2}{figure.caption.4}\protected@file@percent }
+\newlabel{eq:matrix_eq}{{14}{2}{Formulation of the linear system}{equation.2.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces The concatenation of multiple instances of the computational grid into a matrix.}}{2}{figure.caption.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces The transformation of the computational grid into a vector.}}{3}{figure.caption.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Boundary conditions}{3}{subsection.2.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Computational mesh with a layer of ghost nodes on the outside.}}{3}{figure.caption.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Example of final $\boldsymbol  A$-matrix for a domain of size $(4 \times 4)$.}}{3}{figure.caption.8}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:A_matrix}{{7}{3}{Example of final $\boldsymbol A$-matrix for a domain of size $(4 \times 4)$}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Verification}{3}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Experiment 1: Limiting case}{3}{subsection.3.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Solution to the week 1 problem with $k=10000$, $f(x,y) = x + y$, and computational mesh with dimensions $(100 \times 100) \to [-1, 1]$.}}{4}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:plane}{{8}{4}{Solution to the week 1 problem with $k=10000$, $f(x,y) = x + y$, and computational mesh with dimensions $(100 \times 100) \to [-1, 1]$}{figure.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Solution to the week 1 problem with $k=10000$, $f(x,y) = x^2 - y^2$, and computational mesh with dimensions $(100 \times 100) \to [-1, 1]$.}}{4}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:saddle}{{9}{4}{Solution to the week 1 problem with $k=10000$, $f(x,y) = x^2 - y^2$, and computational mesh with dimensions $(100 \times 100) \to [-1, 1]$}{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Solution to the week 1 problem with $k=10000$, $f(x,y) = \sin (2\pi x) + \cos (2\pi y)$, and computational mesh with dimensions$(100 \times 100) \to [-1, 1]$.}}{4}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:wave}{{10}{4}{Solution to the week 1 problem with $k=10000$, $f(x,y) = \sin (2\pi x) + \cos (2\pi y)$, and computational mesh with dimensions$(100 \times 100) \to [-1, 1]$}{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Experiment 2:}{4}{subsection.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Plot of $-k^2 u = f$ with $k=1$ and $f_1 = x+y$.\nonbreakingspace }}{4}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:exp1_plane_k}{{11}{4}{Plot of $-k^2 u = f$ with $k=1$ and $f_1 = x+y$.~}{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Plot of full solution with $k=1$ and $f_1 = x+y$.\nonbreakingspace }}{4}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:exp1_plane_full}{{12}{4}{Plot of full solution with $k=1$ and $f_1 = x+y$.~}{figure.caption.13}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Plot of $-k^2 u = f$ with $k=1$ and the step function $f_2$.\nonbreakingspace }}{4}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:exp1_step_k}{{13}{4}{Plot of $-k^2 u = f$ with $k=1$ and the step function $f_2$.~}{figure.caption.14}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Plot of full solution with $k=1$ and the step function $f_2$.\nonbreakingspace }}{5}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:exp1_step_full}{{14}{5}{Plot of full solution with $k=1$ and the step function $f_2$.~}{figure.caption.15}{}}
+\newlabel{eq:advection}{{23}{5}{Week 2: Introduction}{equation.3.23}{}}
+\newlabel{eq:mean_curvature}{{24}{5}{Week 2: Introduction}{equation.3.24}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Advection}{5}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Semi-Lagrangian time integration}{5}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Verification}{5}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Experiment 1: Grid and time step sizes}{5}{subsection.5.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces A plot of the errors produced by the advection simulation for different grid divisions $N = [32, 64, 128]$ and time step sizes $\Delta t = [0.05, 0.01, 0.02]$. The minimum error was 0.302, and the maximum error was 0.568}}{6}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:adv_exp1_errors}{{15}{6}{A plot of the errors produced by the advection simulation for different grid divisions $N = [32, 64, 128]$ and time step sizes $\Delta t = [0.05, 0.01, 0.02]$. The minimum error was 0.302, and the maximum error was 0.568}{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Initial conditions for the advection problem with $N=64$, $dt = 0.05$.}}{6}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:adv_exp1_start}{{16}{6}{Initial conditions for the advection problem with $N=64$, $dt = 0.05$}{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces Solution to the advection problem with $N=32$, $dt = 0.05$.}}{6}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:adv_exp1_solution1}{{17}{6}{Solution to the advection problem with $N=32$, $dt = 0.05$}{figure.caption.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Solution to the advection problem with $N=64$, $dt = 0.05$.}}{6}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:adv_exp1_solution2}{{18}{6}{Solution to the advection problem with $N=64$, $dt = 0.05$}{figure.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Solution to the advection problem with $N=128$, $dt = 0.05$.}}{6}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:adv_exp1_solution3}{{19}{6}{Solution to the advection problem with $N=128$, $dt = 0.05$}{figure.caption.21}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Experiment 2: Rotation invariance}{6}{subsection.5.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces Simulation of the advection problem with the velocity field $\boldsymbol  u_1 = \qty (y, -x)$.}}{7}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:adv_exp2_u1}{{20}{7}{Simulation of the advection problem with the velocity field $\boldsymbol u_1 = \qty (y, -x)$}{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces Simulation of the advection problem with the velocity field $\boldsymbol  u_1 = \qty (y, -x)$.}}{7}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:adv_exp2_u2}{{21}{7}{Simulation of the advection problem with the velocity field $\boldsymbol u_1 = \qty (y, -x)$}{figure.caption.23}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Mean curvature flow}{7}{section.6}\protected@file@percent }
+\newlabel{eq:mean_curvature_FDA}{{31}{7}{Mean curvature flow}{equation.6.31}{}}
+\newlabel{eq:mean_curvature_euler}{{36}{7}{Mean curvature flow}{equation.6.36}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Numerical considerations}{7}{subsection.6.1}\protected@file@percent }
+\newlabel{eq:g_clamp}{{37}{7}{Numerical considerations}{equation.6.37}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Experiments}{8}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Experiment 1: Varying $\epsilon $}{8}{subsection.7.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {22}{\ignorespaces Solution to the mean curvature problem with $T = 0.1$, $C = 0.5$, $I = 64$ and clamping $g_{ij}$.}}{8}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:exp1_eps_0}{{22}{8}{Solution to the mean curvature problem with $T = 0.1$, $C = 0.5$, $I = 64$ and clamping $g_{ij}$}{figure.caption.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {23}{\ignorespaces Solution to the mean curvature problem with $T = 0.1$, $C = 0.5$, $I = 64$ and $\epsilon = 0.01$.}}{8}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:exp1_eps_0.01}{{23}{8}{Solution to the mean curvature problem with $T = 0.1$, $C = 0.5$, $I = 64$ and $\epsilon = 0.01$}{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {24}{\ignorespaces Solution to the mean curvature problem with $T = 0.1$, $C = 0.5$, $I = 64$ and $\epsilon = 0.1$.}}{8}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:exp1_eps_0.1}{{24}{8}{Solution to the mean curvature problem with $T = 0.1$, $C = 0.5$, $I = 64$ and $\epsilon = 0.1$}{figure.caption.26}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Experiment 2: Varying the grid size}{8}{subsection.7.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {25}{\ignorespaces Solution to the mean curvature problem with $T = 0.1$, $C = 0.25$, $\epsilon = 0.05$ and $I = 32$.}}{8}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:exp2_I_32}{{25}{8}{Solution to the mean curvature problem with $T = 0.1$, $C = 0.25$, $\epsilon = 0.05$ and $I = 32$}{figure.caption.27}{}}
+\newlabel{tocindent-1}{0pt}
+\newlabel{tocindent0}{0pt}
+\newlabel{tocindent1}{4.185pt}
+\newlabel{tocindent2}{10.34999pt}
+\newlabel{tocindent3}{0pt}
+\@writefile{lof}{\contentsline {figure}{\numberline {28}{\ignorespaces First step of the solution to the mean curvature problem with a rectangular polygon.}}{9}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:exp3_step_1}{{28}{9}{First step of the solution to the mean curvature problem with a rectangular polygon}{figure.caption.30}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {29}{\ignorespaces Second step of the solution to the mean curvature problem with a rectangular polygon.}}{9}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:exp3_step_2}{{29}{9}{Second step of the solution to the mean curvature problem with a rectangular polygon}{figure.caption.31}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {30}{\ignorespaces Third step of the solution to the mean curvature problem with a rectangular polygon.}}{9}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:exp3_step_3}{{30}{9}{Third step of the solution to the mean curvature problem with a rectangular polygon}{figure.caption.32}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {26}{\ignorespaces Solution to the mean curvature problem with $T = 0.1$, $C = 0.25$, $\epsilon = 0.05$ and $I = 64$.}}{9}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:exp2_I_64}{{26}{9}{Solution to the mean curvature problem with $T = 0.1$, $C = 0.25$, $\epsilon = 0.05$ and $I = 64$}{figure.caption.28}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {27}{\ignorespaces Solution to the mean curvature problem with $T = 0.1$, $C = 0.25$, $\epsilon = 0.05$ and $I = 128$}}{9}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:exp2_I_128}{{27}{9}{Solution to the mean curvature problem with $T = 0.1$, $C = 0.25$, $\epsilon = 0.05$ and $I = 128$}{figure.caption.29}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Experiment 3: A rectangle}{9}{subsection.7.3}\protected@file@percent }
+\newlabel{TotPages}{{9}{9}{}{page.9}{}}
+\gdef \@abspage@last{9}
