@@ -1,0 +1,614 @@
+\documentclass[acmtog]{acmart}
+\usepackage{lipsum}
+\usepackage{physics}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\newcommand{\draft}[1]{\noindent\textcolor{red}{\texttt{#1}}}
+
+\renewcommand{\thesubsubsection}{--- \hspace{2pt} Step \arabic{subsubsection}: \hspace{-7pt}}
+\titlespacing*{\subsubsection}{0.0\baselineskip}{2\baselineskip}{1\baselineskip}
+
+
+\setcopyright{none} 
+\makeatletter
+\let\@authorsaddresses\@empty
+\makeatother
+\settopmatter{printacmref=false}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+\AtBeginDocument{%
+  \providecommand\BibTeX{{%
+    Bib\TeX}}}
+\begin{document}
+
+\title{CompSim hand-in week 4/5}
+\author{Carl Ivarsen Askehave}
+\affiliation{
+  \institution{(wfq585)}
+  \country{University of Copenhagen}
+}
+
+\maketitle
+\thispagestyle{empty}
+\section{Week 4}
+\subsection{Derivation of the 1D FEM problem and relevant terminology}
+Given a governing equation
+%
+\begin{equation}
+  \frac{ \partial^{2} y }{ \partial x^{2} } = c(x),
+\end{equation}
+%
+with Dirichlet boundary conditions
+%
+\begin{equation}
+  y(x_1) = a, \quad \text{and} \quad y(x_n) = b,
+\end{equation}
+%
+the FEM is done in the 5 following steps:
+
+\subsubsection{Rewriting into a volume integral}
+Usually our governing equation is a differential equation, which can be
+rewritten as a volume integral using the divergence theorem. This is done by
+multiplying the equation with a test function and integrating over the domain.
+We first introduce a trial function $v(x)$ that is 0 on the boundaries and
+random inside.
+%
+\begin{align}
+  v(x) & = 0 \quad \text{for} \quad x = x_1 \ \text{or} \ x_n                 \\
+  v(x) & = \mathrm{random}, \quad \text{for} \quad x \in \ ]x_1, \dots, x_n[.
+\end{align}
+%
+We then rewrite
+%
+\begin{equation}
+  v(x) \left( \frac{ \partial^{2} y }{ \partial x^{2} }  - c(x) \right) = 0,
+\end{equation}
+which is trivially true on the boundary, since $v(x) = 0$, but since we know that $v(x)$ is not 0 inside the domain, we know that the quantity in the parentheses must be $\frac{ \partial^{2} y }{ \partial x^{2} } - c(x) = 0$.
+%
+We now take the integral of both sides
+%
+\begin{equation}
+  \int_{x_1}^{x_n} v(x) \left( \frac{\partial^{2} y }{ \partial x^{2} } - c(x) \right) \, dx = 0.
+\end{equation}
+%
+We do something similar for both the boundary conditions, introducing two new
+trial functions
+%
+\begin{equation}
+  w_1(x) = \begin{cases}
+    0               & \text{for} \ x = x_1, \\
+    \mathrm{random} & \text{otherwise},
+  \end{cases}
+\end{equation}
+%
+and
+%
+\begin{equation}
+  w_n(x) = \begin{cases}
+    0               & \text{for} \ x = x_n, \\
+    \mathrm{random} & \text{otherwise},
+  \end{cases}
+\end{equation}
+%
+such that
+%
+\begin{equation}
+  \int_{x_1}^{x_n} w_1 \left( y(x_1) - a \right) \, dx = 0, \quad \mathrm{and} \quad \int_{x_1}^{x_n} w_b \left( y(x_n) - b \right) \, dx = 0.
+\end{equation}
+
+\subsubsection{Integrating by parts}
+Using the rule for integration by parts, we can rewrite the volume integral as
+%
+\begin{align}
+  \int_{x_1}^{x_n} v(x)\frac{ \partial^{2} y }{ \partial x^{2} }\,dx - \int_{x_1}^{x_n} v(x) c(x) \, dx                                                                                         & = 0, \\
+  \left[v \, \frac{ \partial y }{ \partial x } \right]_{x_1}^{x_n} - \int_{x_1}^{x_n} \frac{ \partial v }{ \partial x } \frac{ \partial y }{ \partial x } \, dx - \int_{x_1}^{x_n} v \, c \, dx & = 0, \\
+  \int_{x_1}^{x_n} \frac{ \partial v }{ \partial x } \frac{ \partial y }{ \partial x } \, dx + \int_{x_1}^{x_n} v \, c \, dx                                                                    & = 0,
+\end{align}
+%
+where we've used that the trial function is 0 at the boundaries, i.e. $v(x_1) =
+  v(x_n) = 0$. The main point of doing this integration by parts step, is to
+reduce the condition of twice differentiability on $y$ to once
+differentiability, and we see that there are only first order derivatives in
+our final expression, so we're happy. One thing to note, is that we end up
+having a derivative of our trial function $v(x)$ which we didn't have before.
+
+\subsubsection{Make an approximation}
+We make the FEM approximation of $\boldsymbol y$
+%
+\begin{equation}
+  y(x) \approx \tilde y(x) = \sum_{i=0}^n N_i(x) \hat{y}_i,
+\end{equation}
+%
+which is equivalent to the matrix expression
+%
+\begin{equation}
+  \tilde{y}(x) = \boldsymbol N(x) \boldsymbol{ \hat{y}} =\begin{bmatrix}
+    N_1(x), \ N_2(x), \ \dots, \ N_n(x)
+  \end{bmatrix} \begin{bmatrix}
+    \hat{y}_1 \\
+    \hat{y}_2 \\
+    \vdots    \\
+    \hat{y}_n
+  \end{bmatrix}.
+\end{equation}
+%
+The functions $N_i(x)$ are called the \textit{shape} or \textit{basis
+  functions}, and are defined to follow the conditions
+%
+\begin{equation}
+  N_i(x) = \begin{cases}
+    1 \quad \text{for} \quad x= x_i, \\
+    0 \quad \text{otherwise},
+  \end{cases} \quad \mathrm{and} \quad \sum_i N_i(x) = 1,
+\end{equation}
+%
+the second of which is the condition for \textit{partition of units} holds
+which says that the sum of the basis functions $N_i(x)$ at any specific point
+$x$ (not necessarily on our grid points $x_i$) always equals unity. A common
+choice of basis functions are the piecewise linear functions
+%
+\begin{align}
+  N_i (x) & = \max\left( 0, 1- \left\lvert  \frac{x_i - x}{\Delta x}  \right\rvert \right)                                       \\
+          & = \begin{cases}
+                \displaystyle1- \left\lvert  \frac{x_i - x}{\Delta x}  \right\rvert & \text{for} \quad x_{i-1} \leq x \leq x_{i+1} \\
+                0                                                                   & \mathrm{otherwise.}
+              \end{cases}
+\end{align}
+%
+Now we want to input our approximation $\tilde{y}(x) = \boldsymbol N(x)
+  \boldsymbol{\hat{y}}$ into our volume integral
+%
+\begin{align}
+  \int_{x_1}^{x_n} \frac{ \partial v }{ \partial x } \frac{ \partial \tilde{y} }{ \partial x } \, dx + \int_{x_1}^{x_n} v \, c \, dx                                         & = 0, \\
+  \int_{x_1}^{x_n} \left( \frac{ \partial v }{ \partial x } \frac{ \partial \boldsymbol N}{ \partial x } \right) \boldsymbol {\hat{y}} \, dx + \int_{x_1}^{x_n} v \, c \, dx & = 0.
+\end{align}
+%
+Now, after we make a choice of trial function $v$ in a moment, the only thing
+unknown in this equation is $\boldsymbol{\hat{y}}$, which we can then solve
+for.
+\subsubsection{Choose a \textit{trial function}}
+One common choice for the trial function is using the basis functions, as such
+%
+\begin{equation}
+  v(x) \equiv \boldsymbol N(x) \boldsymbol {\delta\hat{y}},
+\end{equation}
+%
+where $\boldsymbol{\delta \hat{y}}$ are random values. This is called the
+\textit{Galerkin method} . Inserting this into the volume integral gives us
+%
+\begin{align}
+  \int_{x_1}^{x_n} \boldsymbol {\delta \hat{y}}^T\frac{ \partial \boldsymbol N^T }{ \partial x } \frac{ \partial \boldsymbol N}{ \partial x } \boldsymbol {\hat{y}} \, dx + \int_{x_1}^{x_n} \boldsymbol N \boldsymbol {\delta \hat{y}} \, c \, dx   & = 0, \\
+  \boldsymbol {\delta \hat{y}}^T\left[\left(  \int_{x_1}^{x_n} \frac{ \partial \boldsymbol N^T }{ \partial x } \frac{ \partial \boldsymbol N}{ \partial x } \, dx \right) \boldsymbol {\hat{y}} + \int_{x_1}^{x_n} \boldsymbol N^T\, c \, dx \right] & = 0.
+\end{align}
+%
+Now we know that the random variables $\boldsymbol{\delta \hat{y}}$ are
+non-zero, so therefore we know that the quantity inside the parentheses must be
+0:
+%
+\begin{equation}
+  \left(  \int_{x_1}^{x_n} \frac{ \partial \boldsymbol N^T }{ \partial x } \frac{ \partial \boldsymbol N}{ \partial x } \, dx \right) \boldsymbol {\hat{y}} + \int_{x_1}^{x_n} \boldsymbol N^T\, c \, dx = 0.
+\end{equation}
+%
+we realize that since the basis functions $\boldsymbol N$ are just bunch of
+piecewise linear functions, their derivatives must be constant, and thus we can
+easily evaluate the first term, which becomes a matrix $\boldsymbol K$ times
+the functions $\boldsymbol{\hat{y}}$. We can also evaluate the second terms,
+which we define to be the vector $- \mathbf f$. This means that we end up with
+the linear system $\boldsymbol K \boldsymbol{\hat{y}} = \mathbf f$, where we
+solve for the unknown $\boldsymbol{\hat{y}}$.
+%
+\begin{align}
+  \underbrace{ \left(  \int_{x_1}^{x_n} \frac{ \partial \boldsymbol N^T }{ \partial x } \frac{ \partial \boldsymbol N}{ \partial x } \, dx \right) \boldsymbol {\hat{y}} }_{ \boldsymbol K \boldsymbol {\hat{y}} } + \underbrace{ \int_{x_1}^{x_n} \boldsymbol N^T\, c \, dx}_{ - \mathbf f } & = 0,             \\
+  \boldsymbol K \boldsymbol {\hat{y}} - \mathbf f                                                                                                                                                                                                                                             & = \boldsymbol 0, \\
+  \boldsymbol K \boldsymbol {\hat{y}}                                                                                                                                                                                                                                                         & = \mathbf f.
+\end{align}
+%
+
+\subsubsection{Compute a solution}
+Our linear system has the form
+%
+\begin{equation}
+  \begin{bmatrix}
+    K_{11} & \cdots & K_{1n} \\
+    \vdots & \ddots & \vdots \\
+    K_{n1} & \cdots & K_{nn}
+  \end{bmatrix}
+  \begin{bmatrix}
+    \hat{y}_1 \\
+    \vdots    \\
+    \hat{y}_n
+  \end{bmatrix} = \begin{bmatrix}
+    f_1    \\
+    \vdots \\
+    f_n
+  \end{bmatrix}
+\end{equation}
+%
+Enforcing our boundary conditions $y(x_1) = a$ and $y(x_n) = b$ we get
+%
+\begin{equation}
+  \begin{bmatrix}
+    1            & 0            & \cdots & 0             \\
+    K_{21}       & K_{22}       & \cdots & K_{2n}        \\
+    \vdots       & \vdots       & \ddots & \vdots        \\
+    K_{n-1, \,1} & K_{n-1, \,2} & \cdots & K_{n-1, \, n} \\
+    0            & 0            & \cdots & 1
+  \end{bmatrix}
+  \begin{bmatrix}
+    \hat{y}_1     \\
+    \hat{y}_2     \\
+    \vdots        \\
+    \hat{y}_{n-1} \\
+    \hat{y}_n
+  \end{bmatrix} = \begin{bmatrix}
+    a       \\
+    f_2     \\
+    \vdots  \\
+    f_{n-1} \\
+    b
+  \end{bmatrix}
+\end{equation}
+%
+where we've only modified the first and last rows of $\boldsymbol K$ and
+$\boldsymbol{\hat{y}}$ (I'm not sure whether these are completely correct). We
+call this the modified linear system
+%
+\begin{equation}
+  \boldsymbol {K'} \boldsymbol {\hat{y}} = \mathbf{f'},
+\end{equation}
+%
+and this can be solved. The exact matrix assembly of the boundary condition for
+a 2D probem is a slightly more involved, but the idea is the same.
+
+\subsection{Discussion of grid characteristics}
+The choice of grid spacing is important in the FEM method. If we choose a grid
+spacing that is too large, we might miss important features of the solution,
+and if we choose a grid spacing that is too small, we might end up with a
+system that is too large to solve.
+
+The finite element method is powerful in the sense that it allows us to have a
+non-uniform grid, but we have to be careful with this. The reason is, that, in
+our formalism, the basis funcitons $\boldsymbol N^e$ are piecewise linear
+functions, making our interpolated field values $\boldsymbol u(\boldsymbol x)$
+linear approximations, which are dependent on the geometry on the elements.
+Therefore, if we have a non-uniform grid, the quality and accuracy of our
+solution might be poorer in some regions than others, and this might affect the
+solution somewhere else in the domain.
+
+This where the material from last week comes in. The quality of our basis
+functions, and thus our linear approximations is directly related to the
+regularity or quality of our mesh elements.
+
+\subsection{Implementation and experiments}
+
+\newpage
+\section{Week 5}
+\subsection{Derivation of FEM for a vector field}
+The problem we want to look at is the deformation of a cantilever beam with due
+to a traction force $\boldsymbol t$ and gravity $\boldsymbol g$. We define the
+material (undeformed) coordinates $\boldsymbol X(t)$, the spatial (deformed)
+coordinates $\boldsymbol x(t)$ and the displacement field
+%
+\begin{equation}
+  \boldsymbol u (t) = \boldsymbol X(t) - \boldsymbol x(t).
+\end{equation}
+%
+The governing equation of motion is \textit{Cauchy's equation of motion}
+%
+\begin{equation}
+  \rho \ddot{\boldsymbol x} = \boldsymbol \nabla \cdot \boldsymbol \sigma + \boldsymbol b, \qquad \forall \, \boldsymbol x \in \Omega,
+\end{equation}
+%
+where $\rho$ is the material density, $\boldsymbol \sigma$ is \textit{Cauchy's
+  stress tensor} which describe the internal forces and $\mathbf b$ is the
+external forces, e.g. gravity. All these quantities are parametrized by the
+spatial coordinates $\boldsymbol x$. This equation holds for all control
+volumes on inside of the domain $\Omega$. The condition for the boundary at
+which we apply the traction force is given by \textit{Cauchy's stress
+  hypothesis} as such
+%
+\begin{equation}
+  \boldsymbol t = \boldsymbol \sigma \cdot \boldsymbol n, \qquad \forall  \, \boldsymbol x  \in \Gamma_{\boldsymbol t},
+\end{equation}
+%
+where $\boldsymbol n$ is the vector normal to the surface. This equation holds
+only for boundary at which $\boldsymbol t$ is applied $\Gamma_{\boldsymbol t}$.
+The equation for our other boundary where we want the cantilever beam to be
+fastened is a Dirichlet condition
+%
+\begin{equation}
+  \boldsymbol x = \mathrm{constant} = \boldsymbol X, \qquad \forall \,\boldsymbol x \in \Gamma_D.
+\end{equation}
+%
+Now we can apply the 5 steps of the FEM.
+%
+\subsubsection{Step 1: Rewrite to volume integral}
+integral Now we can rewrite these conditions into a volume integral
+%
+\begin{equation}
+  \int_{\Omega_{\boldsymbol x}} (\rho \ddot{\boldsymbol x} - \boldsymbol \nabla \cdot \boldsymbol \sigma - \boldsymbol b)^T \boldsymbol w \, d{\Omega_{\boldsymbol x}} = \boldsymbol 0.
+\end{equation}
+%
+Now since our domain $\Omega_{\boldsymbol x}$ is going to change at each time
+step of our simulation, and $\rho$, $\boldsymbol \sigma$ and $\boldsymbol b$
+all are parametrized by our spatial (deformed) coordinates $\boldsymbol x$,
+this integral will be a pain to solve. Therefore, we seek to change the
+parametrization to be wrt. to the material coordinates $\boldsymbol X(t)$.
+Therefore we do the transformation
+%
+\begin{equation}
+  \boldsymbol x \to \boldsymbol X - \boldsymbol u.
+\end{equation}
+%
+We now have
+%
+\begin{equation}
+  \int_{\Omega_{\boldsymbol x}} (\rho \ddot{\boldsymbol x} - \boldsymbol \nabla \cdot \boldsymbol \sigma - \boldsymbol b)^T \boldsymbol w \,j\, d{\Omega_{\boldsymbol x}} = \boldsymbol 0,
+\end{equation}
+%
+where $\boldsymbol w$ is a trial function (to be chosen later) and $j$ is the
+determinant of the Jacobian matrix of our deformation field, which tells us about the volume change due to the change of
+coordinates as such $d\Omega_{\boldsymbol x} = j \, d\Omega_{\boldsymbol x}$. Now,
+we assume quasi-staticity $(\dot {\boldsymbol x} = \ddot {\boldsymbol x} =
+  \boldsymbol 0)$ and small displacements $(\boldsymbol x \approx \boldsymbol X
+  \Rightarrow j \approx 1)$, which gives us
+%
+\begin{equation}
+  -\int_{\Omega_{\boldsymbol x}} (\boldsymbol \nabla \cdot \boldsymbol \sigma)^T \boldsymbol w \, d\Omega_{\boldsymbol x} - \int_{\Omega_{\boldsymbol x}} \boldsymbol b^T \boldsymbol w \, d \Omega_{\boldsymbol x} = \boldsymbol 0.
+\end{equation}
+%
+
+\subsubsection{Step 2: Integration by parts}
+The idea is to reduce the requirement of differentiability on the stress tensor $\boldsymbol \sigma$ and increase it on the trial function $\boldsymbol w$. Using the relation $- (\boldsymbol \nabla \cdot \boldsymbol \sigma)^T \boldsymbol w= \boldsymbol \sigma : \boldsymbol \nabla \boldsymbol w^T - \boldsymbol \nabla \cdot (\boldsymbol \sigma \boldsymbol w)$, we can rewrite
+%
+\begin{equation}
+  \int_{\Omega_{\boldsymbol x}} \boldsymbol \sigma : \boldsymbol \nabla \boldsymbol w^T \, d\Omega_{\boldsymbol x} - \int_{\Omega_{\boldsymbol x}} \boldsymbol \nabla \cdot (\boldsymbol \sigma \boldsymbol w) \, d\Omega_{\boldsymbol x} - \int_{\Omega_{\boldsymbol x}} \boldsymbol b^T \boldsymbol w \, d\Omega_{\boldsymbol x} = \boldsymbol 0.
+\end{equation}
+%
+We can rewrite the first term according to the identity $\boldsymbol \sigma :
+  \boldsymbol \nabla \boldsymbol w^T = \boldsymbol \sigma : \frac{1}{2}
+  (\boldsymbol \nabla \boldsymbol w + \boldsymbol \nabla \boldsymbol w^T) =
+  \boldsymbol\sigma : \boldsymbol \epsilon_{\boldsymbol w}$, which holds because the
+stress tensor is symmetric $\boldsymbol\sigma^T = \boldsymbol\sigma$. Now,
+we're not quite finished with the second term, so we'll use [[Gauss' theorem]],
+to rewrite it to
+
+%
+\begin{equation}
+  \int_{\Gamma_{\boldsymbol X}} (\boldsymbol \sigma \boldsymbol w)^T \cdot\boldsymbol n \, d\Gamma_{\boldsymbol X} = \int_{\Gamma_{\boldsymbol X}} \boldsymbol w^T \boldsymbol \sigma^T \cdot\boldsymbol n \, d\Gamma_{\boldsymbol X} = \int_{\Gamma_{\boldsymbol X}} \boldsymbol w^T \boldsymbol \sigma \cdot\boldsymbol n \, d\Gamma_{\boldsymbol X} = \int_{\Gamma_{\boldsymbol t}} \boldsymbol w^T \boldsymbol t \, d\Gamma_{\boldsymbol t},
+\end{equation}
+%
+where we've again used that the stress tensor is symmetric and furthermore,
+we've used our traction boundary condition. Therefore our complete volume
+integral becomes
+%
+\begin{equation}
+  \underbrace{ \int_{\Omega_{\boldsymbol x}} \boldsymbol \sigma : \boldsymbol \epsilon_{\boldsymbol w} \, d\Omega_{\boldsymbol x} }_{ \boldsymbol P_e } \underbrace{\ - \int_{\Gamma_{\boldsymbol t}} \boldsymbol w^T \boldsymbol t \, d\Gamma_{\boldsymbol t} }_{ \boldsymbol P_t } \underbrace{\ - \int_{\Omega_{\boldsymbol x}} \boldsymbol w^T \boldsymbol b \, d\Omega_{\boldsymbol x} }_{ \boldsymbol P_b } = \boldsymbol 0.
+\end{equation}
+%
+We have named the three different terms the \textit{power of elasticity} , the \textit{power
+of traction}  and the \textit{power of body forces} . A curious side note is, that the
+elasticity term is equal to the virtual work done against the elastic forces in
+the material.
+
+\subsection*{\textit{Physical definitions}}
+\subsubsection*{Hooke's law for isotropic linear elastic materials}
+Since we have assumed small displacements, we can use the strain energy density
+function for isotropic linear elastic materials
+%
+\begin{equation}
+  \psi = \mu \,\boldsymbol \epsilon : \boldsymbol \epsilon + \frac{\lambda}{2} \mathrm{tr}(\boldsymbol \epsilon)^2,
+\end{equation}
+%
+where $\lambda$ and $\mu$ are the Lamé coefficients. Now we have
+%
+\begin{equation}
+  \boldsymbol \sigma \equiv \frac{ \partial \psi }{ \partial \boldsymbol \epsilon } = 2 \mu \, \boldsymbol \epsilon + \lambda \,\mathrm{tr}(\boldsymbol \epsilon) \, \boldsymbol I,
+\end{equation}
+%
+or equivalently
+%
+\begin{equation}
+  \sigma_{ij} = 2 \,\mu \,\epsilon_{ij} + \lambda \,\delta_{ij} \sum_k \epsilon_{kk},
+\end{equation}
+%
+where $\delta_{ij}$ is the \textit{kronecker-delta} . This is \textit{Hooke's law for
+isotropic linear elastic materials}, which we can rewrite as a matrix equation
+$\boldsymbol \sigma = \boldsymbol D \boldsymbol \epsilon$
+%
+\begin{equation}
+  \underbrace{ \begin{bmatrix}
+      \sigma_{xx} \\
+      \sigma_{yy} \\
+      \sigma_{zz} \\
+      \sigma_{xy} \\
+      \sigma_{xz} \\
+      \sigma_{yz}
+    \end{bmatrix} }_{ \boldsymbol \sigma } = \underbrace{ \begin{bmatrix}
+      \lambda + 2 \mu & \lambda         & \lambda         & 0   & 0   & 0   \\
+      \lambda         & \lambda + 2 \mu & \lambda         & 0   & 0   & 0   \\
+      \lambda         & \lambda         & \lambda + 2 \mu & 0   & 0   & 0   \\
+      0               & 0               & 0               & \mu & 0   & 0   \\
+      0               & 0               & 0               & 0   & \mu & 0   \\
+      0               & 0               & 0               & 0   & 0   & \mu
+    \end{bmatrix} }_{ \boldsymbol D } \underbrace{ \begin{bmatrix}
+      \epsilon_{xx}   \\
+      \epsilon_{yy}   \\
+      \epsilon_{zz}   \\
+      2 \epsilon_{xy} \\
+      2 \epsilon_{xz} \\
+      2 \epsilon_{yz}
+    \end{bmatrix} }_{ \boldsymbol \epsilon }.
+\end{equation}
+%
+
+\subsubsection{Poisson ratio and Young's modulus}
+The Lamé coefficients are described in terms of the \textit{Poisson ratio}  $\nu$ and
+\textit{Young's modulus}  $E$, which are probably more intuitive to understand:
+%
+\begin{equation}
+  \lambda = \frac{E \nu}{(1 + \nu)(1 - 2 \nu)}, \qquad \mu = \frac{E}{2(1+ \nu)}.
+\end{equation}
+%
+Now we can rewrite $\boldsymbol D$
+%
+\begin{equation}
+  \boldsymbol D = \frac{E}{(1+\nu)(1-2\nu)}\begin{bmatrix}
+    d_0 & d_1 & d_1 & 0   & 0   & 0   \\
+    d_1 & d_0 & d_1 & 0   & 0   & 0   \\
+    d_1 & d_1 & d_0 & 0   & 0   & 0   \\
+    0   & 0   & 0   & d_2 & 0   & 0   \\
+    0   & 0   & 0   & 0   & d_2 & 0   \\
+    0   & 0   & 0   & 0   & 0   & d_2
+  \end{bmatrix},
+\end{equation}
+%
+where $d_0 = 1- \nu$, $d_1 = \nu$ and $d_2 = (1-2\nu) / 2$.
+
+\subsubsection{Rewriting the strain tensor}
+The strain tensor $\varepsilon_{ij} = \frac{1}{2} ( \nabla_i u_j + \nabla_j
+  u_i)$ can be rewritten as the product between an operator $\boldsymbol S$ and
+our displacement field $\boldsymbol u$ as
+
+%
+\begin{equation}
+  \boldsymbol \epsilon = \begin{bmatrix}
+    \epsilon_{xx}   \\
+    \epsilon_{yy}   \\
+    \epsilon_{zz}   \\
+    2 \epsilon_{xy} \\
+    2 \epsilon_{xz} \\
+    2 \epsilon_{yz}
+  \end{bmatrix} = \begin{bmatrix}
+    \displaystyle \frac{ \partial u_x }{ \partial x }                                       \\
+    \displaystyle \frac{ \partial u_y }{ \partial y }                                       \\
+    \displaystyle \frac{ \partial u_z }{ \partial z }                                       \\
+    \displaystyle \frac{ \partial u_x }{ \partial y } + \frac{ \partial u_y }{ \partial x } \\
+    \displaystyle \frac{ \partial u_x }{ \partial z } + \frac{ \partial u_z }{ \partial x } \\
+    \displaystyle \frac{ \partial u_y }{ \partial z } + \frac{ \partial u_z }{ \partial y }
+  \end{bmatrix} = \begin{bmatrix}
+    \displaystyle \frac{ \partial  }{ \partial x } & \displaystyle 0                                & \displaystyle 0                                \\
+    \displaystyle 0                                & \displaystyle \frac{ \partial  }{ \partial y } & \displaystyle 0                                \\
+    \displaystyle 0                                & \displaystyle 0                                & \displaystyle \frac{ \partial  }{ \partial z } \\
+    \displaystyle \frac{ \partial  }{ \partial y } & \displaystyle \frac{ \partial  }{ \partial x } & \displaystyle 0                                \\
+    \displaystyle \frac{ \partial  }{ \partial z } & \displaystyle 0                                & \displaystyle \frac{ \partial  }{ \partial x } \\
+    \displaystyle 0                                & \displaystyle \frac{ \partial  }{ \partial z } & \displaystyle \frac{ \partial  }{ \partial y }
+  \end{bmatrix} \begin{bmatrix}
+    u_x \\
+    u_y \\
+    u_z
+  \end{bmatrix} = \boldsymbol S \boldsymbol u.
+\end{equation}
+%
+\subsection{Step 3: Make an approximation}
+Now we make the finite element approximation
+%
+\begin{equation}
+  \boldsymbol u \approx \boldsymbol N^e \boldsymbol u^e = \sum_\alpha N_\alpha^e(\boldsymbol X) \,u_\alpha^e
+\end{equation}
+%
+where $\alpha = i,j,k,\dots$ are the corners of the mesh element $e$ of
+the 3D mesh. Written out fulle, it becomes
+%
+\begin{align}
+  \boldsymbol u \approx
+  \begin{bmatrix}
+    N_{i_x}^e \hspace{-6pt}& 0       \hspace{-6pt}& 0       \hspace{-6pt}& N_{j_x}^e \hspace{-6pt}& 0         \hspace{-6pt}& 0         \hspace{-6pt}& N_{k_x}^e \hspace{-6pt}& 0         \hspace{-6pt}& 0         \\
+    0         \hspace{-6pt}& N_{i_y} \hspace{-6pt}& 0       \hspace{-6pt}& 0         \hspace{-6pt}& N_{j_y}^e \hspace{-6pt}& 0         \hspace{-6pt}& 0         \hspace{-6pt}& N_{k_y}^e \hspace{-6pt}& 0         \\
+    0         \hspace{-6pt}& 0       \hspace{-6pt}& N_{i_z} \hspace{-6pt}& 0         \hspace{-6pt}& 0         \hspace{-6pt}& N_{j_z}^e \hspace{-6pt}& 0         \hspace{-6pt}& 0         \hspace{-6pt}& N_{k_z}^e
+  \end{bmatrix}
+  \begin{bmatrix}
+    u_{i_x}^e \\
+    u_{i_y}^e \\
+    u_{i_z}^e \\
+    u_{j_x}^e \\
+    u_{j_y}^e \\
+    u_{j_z}^e \\
+    u_{k_x}^e \\
+    u_{k_y}^e \\
+    u_{k_z}^e
+  \end{bmatrix}
+\end{align}
+%
+\subsubsection{Choose a trial function}
+We again use the \textit{Galerkin method}  for our trial functions
+%
+\begin{equation}
+  \boldsymbol w = \boldsymbol N^e \boldsymbol \delta\boldsymbol w^e.
+\end{equation}
+%
+Given our weak form
+%
+\begin{equation}
+  \int_{\Omega_{\boldsymbol x}} \boldsymbol \sigma : \boldsymbol \epsilon_{\boldsymbol w} \, d\Omega_{\boldsymbol x}- \int_{\Gamma_{\boldsymbol t}} \boldsymbol w^T \boldsymbol t \, d\Gamma_{\boldsymbol t}- \int_{\Omega_{\boldsymbol x}} \boldsymbol w^T \boldsymbol b \, d\Omega_{\boldsymbol x} = \boldsymbol 0,
+\end{equation}
+%
+we know from above that $\boldsymbol \sigma = \boldsymbol D \boldsymbol
+  \epsilon$ and $\boldsymbol \epsilon = \boldsymbol S \boldsymbol u \approx
+  \boldsymbol S \boldsymbol N^e \boldsymbol u^e = \boldsymbol B \boldsymbol u^e$,
+where we've defined $\boldsymbol B = \boldsymbol S \boldsymbol N^e$. Now we can
+rewrite
+%
+\begin{equation}
+  \boldsymbol \sigma : \boldsymbol \epsilon_{\boldsymbol w} = \boldsymbol \sigma^T \boldsymbol \epsilon_{\boldsymbol w} = \boldsymbol \epsilon^T \boldsymbol D \boldsymbol \epsilon = \boldsymbol \delta{\boldsymbol w^e}^T {\boldsymbol B^e}^T \boldsymbol D \boldsymbol B^e \boldsymbol u^e,
+\end{equation}
+%
+where after the first equals, $\boldsymbol \sigma$ and $\boldsymbol
+  \epsilon_{\boldsymbol w}$ are in vector form. Now we can insert into the weak
+form and get
+%
+\begin{align}
+  \left( \int_{\Omega_{\boldsymbol x}} \boldsymbol \delta{\boldsymbol w^e}^T {\boldsymbol B^e}^T \boldsymbol D \, \boldsymbol B^e \, d\Omega_{\boldsymbol x} \right) \boldsymbol u^e
+  &- \int_{\Gamma_{\boldsymbol t}} \boldsymbol \delta{\boldsymbol w^e}^T {\boldsymbol N^e}^T  \, \boldsymbol t \, d\Gamma_{\boldsymbol t} \notag \\
+  & \quad - \int_{\Omega_{\boldsymbol x}} \boldsymbol \delta{\boldsymbol w^e}^T {\boldsymbol N^e}^T \boldsymbol b \, d\Omega_{\boldsymbol x} = \boldsymbol 0,
+\end{align}
+%
+which is equivalent to
+%
+\begin{align}
+  \boldsymbol \delta{\boldsymbol w^e}^T\Bigg[\left( \int_{\Omega_{\boldsymbol x}} {\boldsymbol B^e}^T \boldsymbol D \, \boldsymbol B^e \, d\Omega_{\boldsymbol x} \right) \boldsymbol u^e
+  & - \int_{\Gamma_{\boldsymbol t}} {\boldsymbol N^e}^T  \, \boldsymbol t \, d\Gamma_{\boldsymbol t} \notag \\
+  & \qquad - \int_{\Omega_{\boldsymbol x}} {\boldsymbol N^e}^T \boldsymbol b \, d\Omega_{\boldsymbol x} \Bigg] = \boldsymbol 0.
+\end{align}
+%
+Now since the variables $\boldsymbol \delta \boldsymbol w^e$ are chosen to be
+random, the term inside the square brackets must be equal to zero. Also we can
+suffice with integrating only elementwise now (see integration bounds)
+%
+\begin{equation}
+  \left( \int_{\Omega_{\boldsymbol x}^e} {\boldsymbol B^e}^T \boldsymbol D \, \boldsymbol B^e \, d\Omega_{\boldsymbol x} \right) \boldsymbol u^e
+- \int_{\Gamma_{\boldsymbol t}^e} {\boldsymbol N^e}^T  \, \boldsymbol t \, d\Gamma_{\boldsymbol t}
+- \int_{\Omega_{\boldsymbol x}^e} {\boldsymbol N^e}^T \boldsymbol b \, d\Omega_{\boldsymbol x} = \boldsymbol 0.
+\end{equation}
+%
+Now, since the second and third terms don't depend on our displacement field
+$\boldsymbol u$, we can solve for these, using known values. Additionally, if
+we the shape functions $\boldsymbol N$ are of first order, we know that the
+matrix $\boldsymbol B$ is constant, and since $\boldsymbol D$ is constant per
+definition, we can also simplify the first term. We get
+%
+\begin{equation}
+  \left( {\boldsymbol B^e}^T \boldsymbol D \, \boldsymbol B^e \int_{\Omega_{\boldsymbol x}^e} \, d\Omega_{\boldsymbol x} \right) \boldsymbol u^e + \mathbf f_t^e + \mathbf f_b^e  = \boldsymbol 0,
+\end{equation}
+%
+which is the same as
+%
+\begin{align}
+  V^e \, {\boldsymbol B^e}^T \boldsymbol D \boldsymbol B^e \,\boldsymbol u^e + \mathbf f ^e & = \boldsymbol 0, \\
+  \boldsymbol K^e \boldsymbol u^e + \mathbf f^e                                             & = \boldsymbol 0.
+\end{align}
+%
+And we're done! Now we can solve this linear system using whatever numerical
+solver we'd like.
+
+\subsection{Apply FEM to a more complex problem such as linear elasticity.}
+\subsection{Apply experimental validation to a FEM implementation of for instance linear
+      elasticity.}
+
+\end{document}
+\endinput
